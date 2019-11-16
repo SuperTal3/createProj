@@ -7,7 +7,7 @@ if %2%=="DNCWebsite" goto dotnetweb
 if %2%=="Python" goto pythonProj
 
 :localGit
-@git config --global user.email "talkelley3@outlook.com"
+@git config --global user.email "yourEmail@emailProvider.com"
 @git config --global user.name "SuperTal3"
 @git init
 @git add README.md
