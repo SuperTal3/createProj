@@ -3,6 +3,7 @@ import os
 import json
 from selenium import webdriver
 from subprocess import call
+import subprocess
 
 fileExist = True
 
@@ -42,7 +43,7 @@ def main():
                 gitEmail = str(data["email"])
                 gitPass = str(data["password"])
     else:
-        print("Baaaaaaaad")
+        print("File already Created!")
     logIn()
     createGitRepo()
     createLocalRepo()
@@ -51,6 +52,7 @@ def main():
 
 def createData():
     print("No data file exists yet :( probably because this is the first time you have run this program, please input the required values, to be stored in a Json file for this program to work.")
+    print("Please Note: Your installation of Visual Studio Code must be located in C:\Program Files\Microsoft VS Code\Code.exe")
     newJson = {"userDir" : "Null", "userName" : "Null", "email" : "Null", "password" : "Null"}
     lUsrName = ""
     lUsrDir = ""
@@ -61,6 +63,7 @@ def createData():
     lEmail = str(input("Enter Email: "))
     lPassword = str(input("Enter Password: "))
     lUsrDir = str(input("Enter User directory name.  Can be found in C:\\Users\\yourdirectory"))
+
     print("\n")
     newJson["userDir"] = lUsrDir
     newJson["userName"] = lUsrName
@@ -101,10 +104,10 @@ def createLocalRepo():
         os.mkdir(dir)
         os.chdir(dir)
     print("Creating local Repository...")
-    call(["git", "config", "--global", gitEmail])
-    call(["git", "config", "--global", userName])
+    call(["git", "config", "--global", "user.email", gitEmail])
+    call(["git", "config", "--global", "user.name", userName])
     call(["git", "init"])
-    call(["git", "add", "README.md"])
+    #call(["git", "add", "README.md"])
     if(projType == "DNCWebsite"):
         print("Creating ASP.NET Core Website")
         call(["dotnet", "new", "webapp", "-lang", "C#"])
@@ -112,10 +115,13 @@ def createLocalRepo():
         print("Creating Python Project...")
         with open("./main.py", "w") as f:
             f.write("#! python3")
+    with open("./README.md", "w") as f:
+            f.write(f"#{projName} \n Write info about your project here.")
+    call(["git", "add", "."])
     call(["git", "commit", "-m", "Initial Commit"])
     call(["git", "remote", "add", "origin", f"https://github.com/{userName}/{projName}.git"])
     call(["git", "push", "-u", "origin", "master"])
     print("Local Repository Created!!")
-
+    subprocess.Popen(['C:\Program Files\Microsoft VS Code\Code.exe', dir])
 if __name__ == "__main__":
     main()
