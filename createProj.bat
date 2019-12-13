@@ -1,1 +1,1 @@
-@python ./createProj.py %1% %2%
+@python ./createProj.py %1 %2
